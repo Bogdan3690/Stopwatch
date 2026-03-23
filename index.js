@@ -14,13 +14,42 @@ let timerId = null;
 let timerIsActive = false
 
 start.addEventListener("click", startStopwatch)
+reset.addEventListener("click", resetStopwatch)
+stop.addEventListener("click", stopStopwatch)
+
 
 function startStopwatch() {
-    const timerId = setInterval( () => {
+  console.log(timerIsActive);
+  
+  if (timerIsActive) {
+    return
+  }
+    timerId = setInterval(() => {
     startSeconds += 1
     console.log(startSeconds);
+    const time = getTimeFromSeconds(startSeconds)
+    console.log(time)
+    const timeString = `${time.hours}:${time.minutes}:${time.secs}`
+    output.textContent = timeString
+    console.log(timeString)
     }, 1000)
+    timerIsActive = true
 }
+
+
+function resetStopwatch() {
+  timerIsActive = false
+  clearInterval(timerId)
+  startSeconds = 0
+  output.textContent = "00:00:00"
+}
+
+
+function stopStopwatch() {
+  timerIsActive = false
+  clearInterval(timerId)
+}
+
 
 function getTimeFromSeconds(startSeconds) {
   const SECONDS_IN_MINUTE = 60;
@@ -40,6 +69,8 @@ function getTimeFromSeconds(startSeconds) {
 
   return { days, hours, minutes, secs };
 }
+
+
 
 function pad(value) {
   return String(value).padStart(2, "0");
